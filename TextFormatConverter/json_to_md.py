@@ -19,17 +19,13 @@ def json_to_md(data, depth=1):
         except TypeError as e:
             raise TypeError(f"Input contains non-JSON-serializable types: {str(e)}")
 
-
-    if not isinstance(data, (dict, list)):
-        raise TypeError(f"Input data must be a JSON-serializable type, got {type(data).__name__}")
-
     md_lines = []
 
     if isinstance(data, dict):
         # For each key, add a heading and then recurse on its value
         for key, value in data.items():
             md_lines.append(f"{'#' * depth} {key}")
-            md_lines.append(json_to_markdown(value, depth + 1))
+            md_lines.append(json_to_md(value, depth + 1))
 
     elif isinstance(data, list):
         # Check if it's a list of dictionaries
@@ -58,7 +54,7 @@ def json_to_md(data, depth=1):
             # Otherwise, render as bullet points (or recursively handle items)
             for item in data:
                 # Recursively convert item to markdown
-                item_md = json_to_markdown(item, depth + 1)
+                item_md = json_to_md(item, depth + 1)
                 item_lines = item_md.split("\n")
 
                 if len(item_lines) == 1:

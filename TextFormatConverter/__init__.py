@@ -1,1 +1,1 @@
-from .json_to_md import json_to_markdown
+from .json_to_md import json_to_md
