@@ -42,8 +42,6 @@ value3.2
         self.assertEqual(json_to_md(data), "This is a string, not a dictionary")
 
 
-
-
 if __name__ == "__main__":
     unittest.main()
 
