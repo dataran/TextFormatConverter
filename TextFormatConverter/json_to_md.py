@@ -53,6 +53,10 @@ def json_to_md(data, depth=1):
                 row_values = [str(item.get(k, "")) for k in header_keys]
                 row_line = "| " + " | ".join(row_values) + " |"
                 md_lines.append(row_line)
+            
+            # Add two blank lines after the table
+            md_lines.append("")
+            md_lines.append("")
 
         else:
             # Otherwise, render as bullet points (or recursively handle items)

@@ -94,8 +94,8 @@ class TestJsonToMd_2(unittest.TestCase):
             }
         }
                 
-        print(json_to_md(data))
-
+        json_to_md(data)
+        t=1
 if __name__ == "__main__":
     unittest.main()
 

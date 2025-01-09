@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="text_format_converter",
-    version="0.21",
+    version="0.23",
     packages=find_packages(),
     install_requires=[],
     author="Ran Geler",
