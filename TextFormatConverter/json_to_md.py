@@ -25,7 +25,11 @@ def json_to_md(data, depth=1):
         # For each key, add a heading and then recurse on its value
         for key, value in data.items():
             md_lines.append(f"{'#' * depth} {key}")
-            md_lines.append(json_to_md(value, depth + 1))
+            # If the value is a list of dictionaries, don't increase depth
+            if isinstance(value, list) and all(isinstance(item, dict) for item in value) and value:
+                md_lines.append(json_to_md(value, depth))  # Keep same depth for table
+            else:
+                md_lines.append(json_to_md(value, depth + 1))
 
     elif isinstance(data, list):
         # Check if it's a list of dictionaries
@@ -78,27 +82,36 @@ def json_to_md(data, depth=1):
 if __name__ == "__main__":
     # Sample JSON-like data
     sample_data = {
-        "title": "Example JSON",
-        "metadata": {
+        "title": "Complete Example",          # Simple scalar in dict
+        "metadata": {                         # Nested dictionary
             "author": "John Doe",
-            "version": 1.2,
-            "tags": ["sample", "json", "markdown", "converter"]
+            "version": 1.0,
+            "active": True,
+            "notes": None
         },
-        "records": [
-            {"name": "Alice", "age": 30, "city": "London"},
-            {"name": "Bob", "age": 25, "city": "New York"},
+        "simple_list": [                      # List of scalars
+            "Item 1",
+            "Item 2",
+            123,
+            True
         ],
-        "recording": [
-            {"Country": "Yes"},
-            {"Pop": "No"},
-            {"Classic": "No"}
+        "table_data": [                       # List of dictionaries (becomes table)
+            {"name": "Product A", "price": 100, "available": True},
+            {"name": "Product B", "price": 200, "available": False}
         ],
-        "notes": [
-            "This is a bullet point list.",
-            "Another bullet point.",
-            {"nested_note": "Even deeper data"}
-        ]
+        "complex_list": [                     # List with mixed content
+            {"title": "Nested Dict"},
+            ["nested", "list"],
+            "simple string"
+        ],
+        "nested_section": {                   # Dictionary with nested table
+            "description": "Section with table",
+            "items": [                        # Nested list of dictionaries
+                {"id": 1, "status": "done"},
+                {"id": 2, "status": "pending"}
+            ]
+        }
     }
 
-    md_output = json_to_markdown(sample_data)
+    md_output = json_to_md(sample_data)
     print(md_output)
